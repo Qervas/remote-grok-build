@@ -1,0 +1,19 @@
+{
+  "name": "remote-grok-build",
+  "version": "0.1.0",
+  "description": "Bridge Grok Bot chat to local Grok Build on a linked PC: mission control, streaming turns, interrupt, media packs; optional chief\u2192workers and RGB channel.",
+  "author": {
+    "name": "Qervas"
+  },
+  "repository": "https://github.com/Qervas/remote-grok-build",
+  "license": "MIT",
+  "skills": "./skills/",
+  "logo": "./assets/grok-bot.svg",
+  "keywords": [
+    "grok-bot",
+    "grok-build",
+    "remote",
+    "mission-control",
+    "skills"
+  ]
+}

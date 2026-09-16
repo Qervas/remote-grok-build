@@ -1,0 +1,19 @@
+{
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
+  "name": "remote-grok-build",
+  "version": "0.1.0",
+  "description": "Bridge Grok Bot chat to local Grok Build on a linked PC: mission control, streaming turns, interrupt, media packs; optional chief\u2192workers and RGB channel.",
+  "author": {
+    "name": "Qervas"
+  },
+  "license": "MIT",
+  "repository": "https://github.com/Qervas/remote-grok-build",
+  "keywords": [
+    "grok-bot",
+    "grok-build",
+    "remote",
+    "mission-control",
+    "skills"
+  ],
+  "logo": "assets/grok-bot.svg"
+}
