@@ -20,6 +20,7 @@ Grok Bot **Agent Plugin** (skills-only) that bridges chat to **local Grok Build*
 - Bidirectional media: session images → chat; chat images → `--prompt-json` image blocks
 - Optional chief → per-project worker bots + optional RGB channel
 - Idle sessions cold-open with `grok -r <id>` (no live hold required)
+- **Stays current on its own:** drift check against the installed `grok` on every use, plus a daily routine that re-derives the CLI cheat sheet from `--help` when Grok Build ships a new release (never runs `grok update` itself)
 
 ## Install
 1. **Marketplace (after listing):** Settings → Plugins → search `remote-grok-build`

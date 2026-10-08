@@ -5,13 +5,25 @@
 param(
   [int]$IdlePerFolder = 3,
   [int]$MaxIdleFolders = 12,
-  [string]$OutJson = ""
+  [string]$OutJson = "",
+  # The skill's "Verified against" grok version; pass the value from your skill copy.
+  [string]$VerifiedVersion = "1.0.50",
+  # Also ask the update server for the latest release (read-only; never installs).
+  [switch]$CheckLatest
 )
 $ErrorActionPreference = 'SilentlyContinue'
 $grok = Join-Path $env:USERPROFILE '.grok'
 
 $version = $null
 try { $version = ((& grok --version) 2>$null | Select-Object -First 1) } catch {}
+function Get-Semver([string]$t) { if ($t -match '(\d+)\.(\d+)\.(\d+)') { return [version]("{0}.{1}.{2}" -f $Matches[1], $Matches[2], $Matches[3]) } return $null }
+$installed = Get-Semver $version
+$verified = Get-Semver $VerifiedVersion
+$drift = if (-not $installed -or -not $verified) { 'unknown' } elseif ($installed -gt $verified) { 'newer' } elseif ($installed -lt $verified) { 'older' } else { 'none' }
+$latest = $null
+if ($CheckLatest) {
+  try { $u = (& grok update --check --json 2>$null | Out-String) | ConvertFrom-Json; $latest = $u.latestVersion } catch {}
+}
 
 # Open TUIs. Check the pid is still a grok process; after a self-update the running
 # image is renamed grok.exe.old, so flag those as running an old binary.
@@ -94,6 +106,7 @@ $idleFolders = @($idleFolders | Sort-Object newest -Descending | Select-Object -
 $result = [pscustomobject]@{
   scanned_at = (Get-Date).ToUniversalTime().ToString('o')
   grok_version = $version
+  version_drift = [pscustomobject]@{ installed = "$installed"; verified = "$verified"; latest = $latest; drift = $drift }
   live = @($liveRows | Sort-Object status, cwd)
   running = $running
   folders = $idleFolders
@@ -110,6 +123,8 @@ New-Item -ItemType Directory -Force -Path (Split-Path $OutJson) | Out-Null
 $result | ConvertTo-Json -Depth 8 | Set-Content -Path $OutJson -Encoding utf8
 Write-Output "WROTE $OutJson"
 Write-Output "VERSION=$version"
+$latestTxt = if ($latest) { " LATEST=$latest" } else { '' }
+Write-Output "DRIFT=$drift INSTALLED=$installed VERIFIED=$verified$latestTxt"
 Write-Output "LIVE=$($result.totals.live) STALE=$($result.totals.stale) RUNNING=$($result.totals.running) FOLDERS=$($result.totals.folders) SESSIONS=$($result.totals.sessions)"
 foreach ($r in $result.live) {
   $st = if ($r.old_binary) { "$($r.status)(old-binary)" } else { $r.status }

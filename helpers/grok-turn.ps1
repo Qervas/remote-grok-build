@@ -111,14 +111,16 @@ $p = Start-Process -FilePath $grok -ArgumentList $argLine -WorkingDirectory $Cwd
   -RedirectStandardOutput $log -RedirectStandardError $err -WindowStyle Hidden -PassThru
 $info = [ordered]@{
   pid = $p.Id; cwd = $Cwd; session_id = $SessionId; fork = [bool]$Fork; format = $Format; mode = $mode
-  images = $fallbackImages; log = $log; stderr = $err; started_at = (Get-Date).ToUniversalTime().ToString('o'); cmd = "$grok $shown"
+  images = $fallbackImages; image_sha256 = @($fallbackImages | ForEach-Object { (Get-FileHash -LiteralPath $_ -Algorithm SHA256).Hash }); log = $log; stderr = $err; started_at = (Get-Date).ToUniversalTime().ToString('o'); cmd = "$grok $shown"
 }
 $info | ConvertTo-Json -Depth 4 | Set-Content -LiteralPath $meta -Encoding utf8
 Write-Output "PID=$($p.Id)"; Write-Output "LOG=$log"; Write-Output "ERR=$err"; Write-Output "META=$meta"; Write-Output "MODE=$mode"
 
 if ($Wait) {
+  # Prefer polling (Get-Process -Id + tail LOG) over -Wait on a remote link: long waits can be cut off.
   $p.WaitForExit()
   Write-Output "EXIT=$($p.ExitCode)"
-  $last = Get-Content -LiteralPath $log -Tail 1 -ErrorAction SilentlyContinue
-  if ($last) { try { $e = $last | ConvertFrom-Json; Write-Output ("END|{0}|{1}" -f $e.stopReason, $(if ($e.sessionId) { $e.sessionId } else { $e.session_id })) } catch {} }
+  $endLine = Get-Content -LiteralPath $log -ErrorAction SilentlyContinue | Where-Object { $_ -match '^\{"type":"(end|error|result)"' } | Select-Object -Last 1
+  if ($endLine) { try { $e = $endLine | ConvertFrom-Json; Write-Output ("END|{0}|{1}" -f $(if ($e.stopReason) { $e.stopReason } else { $e.stop_reason }), $(if ($e.sessionId) { $e.sessionId } else { $e.session_id })) } catch {} }
+  else { Write-Output 'END|none' }
 }
