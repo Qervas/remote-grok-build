@@ -8,14 +8,18 @@
 
 <p align="center"><b>Grok Bot</b> ↔ <b>Grok Build</b> on a linked PC</p>
 
-Grok Bot **Agent Plugin** (skills-only) that bridges chat to **local Grok Build** on a linked Windows PC — no public tunnels.
+Grok Bot **Agent Plugin** (skills-only) that bridges chat to **local Grok Build** on a linked Windows PC over the Grok Bot computer link. No public tunnels.
+
+**Template v7** · plugin `0.2.0` · verified against `grok 1.0.50` (Oct 2026). See [CHANGELOG.md](CHANGELOG.md).
 
 ## What you get
-- Mission control (`status`): LIVE → STALE → idle
-- Streaming turns, interrupt, after-turn image/git packs
-- Bidirectional media (session images ↔ chat attachments)
+- Mission control (`status`): LIVE → STALE → RUNNING → idle, with title, last-turn summary, model/effort, branch
+- Streaming turns over grok's native NDJSON (`--output-format streaming-json`), background launch + tail
+- Interrupt that stops only the headless turn and its child process tree (never your TUIs)
+- After-turn packs: new session images/assets, git diffstat, summary, stop reason
+- Bidirectional media: session images → chat; chat images → `--prompt-json` image blocks
 - Optional chief → per-project worker bots + optional RGB channel
-- Idle sessions cold-open with `grok --resume` (no live hold required)
+- Idle sessions cold-open with `grok -r <id>` (no live hold required)
 
 ## Install
 1. **Marketplace (after listing):** Settings → Plugins → search `remote-grok-build`
@@ -23,11 +27,12 @@ Grok Bot **Agent Plugin** (skills-only) that bridges chat to **local Grok Build*
    ```bash
    ln -s /path/to/remote-grok-build ~/.cursor/plugins/local/remote-grok-build
    ```
-3. **Bot template:** [Add from x.ai](https://x.ai/bot/dLYpR1sSkG0VLa8-faEgX) — public Grok Bot recipe with the same skill + conventions.
+3. **Bot template:** [Add from x.ai](https://x.ai/bot/dLYpR1sSkG0VLa8-faEgX): public Grok Bot recipe with the same skill and conventions. The published template is still v6; this repo is v7.
 
 ## Prerequisites on the linked PC
-- `grok` on PATH (`~/.grok/bin/grok.exe`)
-- Optional helpers under `~/.grok-bridge/` — see `helpers/` and `docs/HELPERS.md`
+- `grok` 1.0.50+ on PATH (`~/.grok/bin/grok.exe`), signed in
+- PowerShell 5.1 or 7+
+- Optional helpers under `~/.grok-bridge/`: see `helpers/` and `docs/HELPERS.md`
 
 ## Layout
 ```text
@@ -36,10 +41,11 @@ plugin.json
 skills/remote-grok-build/SKILL.md
 helpers/          # optional PowerShell wrappers
 docs/
+CHANGELOG.md
 ```
 
 ## Not included
-Secrets, personal machine paths, Cloudflare/ngrok tunnels, Cursor CloudAgent workflows.
+Secrets, personal machine paths, Cloudflare/ngrok tunnels, `grok agent headless` relays, Cursor CloudAgent workflows.
 
 ## License
 MIT
