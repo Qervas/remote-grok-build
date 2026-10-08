@@ -1,5 +1,11 @@
 # Changelog
 
+## v7 template staged · 2026-10-08
+- Grok Bot template v7 is **staged for publishing (not public yet)**; the public link still serves v6. Contents: `docs/TEMPLATE.md`.
+- New first-run skill `skills/rgb-getting-started/SKILL.md`: pick the linked PC, check grok and sign-in, install helpers with consent, pin a project, run the drift check, and make sure exactly one self-update routine exists.
+- New `routines/grok-build-self-update.md`: the template's daily routine (name, schedule, verbatim job text, guarantees).
+- Skill synced to the saved v7: the daily watch now says "your routine tool" instead of naming a specific tool; the helper list mentions version drift, PID-based interrupt, and the after-turn state/reply text.
+
 ## v7 (live-test fixes + self-update) · 2026-10-08
 - **Stay current (self-update):** new skill section. A drift check on every use compares `grok --version` with "Verified against"; when it's newer the bot re-reads `--help`, adapts (help wins), rewrites its own skill copy, and bumps the version. On first setup the bot creates one daily routine that watches for releases (`grok update --check --json`, read-only) and re-derives the cheat sheet. It may point the owner at this repo when its copy has moved past the published template. Never runs `grok update`, never touches live sessions.
 - `grok-mission-control.ps1`: `-VerifiedVersion` / `-CheckLatest`, prints `DRIFT=…`, adds `version_drift` to the JSON.

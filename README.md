@@ -10,7 +10,7 @@
 
 Grok Bot **Agent Plugin** (skills-only) that bridges chat to **local Grok Build** on a linked Windows PC over the Grok Bot computer link. No public tunnels.
 
-**Template v7** · plugin `0.2.0` · verified against `grok 1.0.50` (Oct 2026). See [CHANGELOG.md](CHANGELOG.md).
+**Template v7** · plugin `0.2.0` · verified against `grok 1.0.50` (live-tested Oct 2026). v7 is **staged for publishing, not public yet**. See [CHANGELOG.md](CHANGELOG.md) and [docs/TEMPLATE.md](docs/TEMPLATE.md).
 
 ## What you get
 - Mission control (`status`): LIVE → STALE → RUNNING → idle, with title, last-turn summary, model/effort, branch
@@ -20,7 +20,8 @@ Grok Bot **Agent Plugin** (skills-only) that bridges chat to **local Grok Build*
 - Bidirectional media: session images → chat; chat images → `--prompt-json` image blocks
 - Optional chief → per-project worker bots + optional RGB channel
 - Idle sessions cold-open with `grok -r <id>` (no live hold required)
-- **Stays current on its own:** drift check against the installed `grok` on every use, plus a daily routine that re-derives the CLI cheat sheet from `--help` when Grok Build ships a new release (never runs `grok update` itself)
+- First-run setup skill (`rgb-getting-started`)
+- **Stays current on its own:** drift check against the installed `grok` on every use, plus a daily routine that re-derives the CLI cheat sheet from `--help` when Grok Build ships a new release (never runs `grok update` itself). See [routines/grok-build-self-update.md](routines/grok-build-self-update.md).
 
 ## Install
 1. **Marketplace (after listing):** Settings → Plugins → search `remote-grok-build`
@@ -28,7 +29,7 @@ Grok Bot **Agent Plugin** (skills-only) that bridges chat to **local Grok Build*
    ```bash
    ln -s /path/to/remote-grok-build ~/.cursor/plugins/local/remote-grok-build
    ```
-3. **Bot template:** [Add from x.ai](https://x.ai/bot/dLYpR1sSkG0VLa8-faEgX): public Grok Bot recipe with the same skill and conventions. The published template is still v6; this repo is v7.
+3. **Bot template:** [Add from x.ai](https://x.ai/bot/dLYpR1sSkG0VLa8-faEgX): public Grok Bot recipe with the same skill and conventions. That public link still serves v6. v7 (both skills plus the daily self-update routine) is staged and not yet published.
 
 ## Prerequisites on the linked PC
 - `grok` 1.0.50+ on PATH (`~/.grok/bin/grok.exe`), signed in
@@ -40,8 +41,10 @@ Grok Bot **Agent Plugin** (skills-only) that bridges chat to **local Grok Build*
 plugin.json
 .grok-plugin/plugin.json
 skills/remote-grok-build/SKILL.md
+skills/rgb-getting-started/SKILL.md   # first-run setup
+routines/grok-build-self-update.md    # daily self-update routine (template)
 helpers/          # optional PowerShell wrappers
-docs/
+docs/             # ARCHITECTURE, HELPERS, TEMPLATE
 CHANGELOG.md
 ```
 

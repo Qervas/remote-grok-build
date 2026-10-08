@@ -3,7 +3,8 @@ name: remote-grok-build
 description: >-
   Use this when bridging Grok Bot chat to local Grok Build (the grok CLI) on a
   linked Windows PC: mission control, streaming turns, interrupt, media packs;
-  optionally suggest chief→per-project workers and an RGB channel for parallel work.
+  optionally suggest chief→per-project workers and an RGB channel for parallel
+  work.
 ---
 # Remote Grok Build bridge (template v7)
 
@@ -28,7 +29,7 @@ This skill keeps itself current; nobody has to say "update".
    - Adapt this turn's commands. **Help output wins over the cheat sheet.**
    - Rewrite your own copy of this skill with your skill tool (same skill id): fix the cheat sheet, bump **Verified against** to the installed version with today's date, keep everything else. If a helper under `~/.grok-bridge/` broke because of the change, fix that local copy too and say so.
    - Tell the owner in one or two lines what changed.
-2. **Daily watch.** On first setup, if you don't already have one, create **one** daily routine for yourself (your routine tool, e.g. UpdateState target "routine"), at a quiet hour in the owner's timezone. Each run:
+2. **Daily watch.** On first setup, if you don't already have one, create **one** daily routine for yourself with your routine tool, at a quiet hour in the owner's timezone. Each run:
    - On the linked PC, run `grok --version` and `grok update --check --json` (`--check` is read-only).
    - If the installed version is newer than **Verified against**, run the re-derive steps from (1): help → cheat sheet → rewrite the skill → tell the owner what changed (new/removed/renamed flags, output-format changes, session-layout changes).
    - If only `latestVersion` is newer (not installed yet), just tell the owner a new release exists. grok's own auto-update installs it; re-derive once it's installed.
@@ -77,10 +78,10 @@ The channel is for **bot coordination**, not a replacement for mission-control w
 ## Prerequisites
 - Linked computer with `grok` on PATH (`~/.grok/bin/grok.exe`), signed in (`grok login`)
 - Optional helpers under `~/.grok-bridge/` (from the plugin's `helpers/`):
-  - `grok-mission-control.ps1`: LIVE / STALE / RUNNING / idle inventory
+  - `grok-mission-control.ps1`: LIVE / STALE / RUNNING / idle inventory, plus version drift
   - `grok-turn.ps1`: launch a headless turn in the background, NDJSON to a log
-  - `grok-interrupt.ps1`: stop a headless turn (process tree) by session id
-  - `grok-after-turn.ps1`: reply pack (new images, git, summary)
+  - `grok-interrupt.ps1`: stop a headless turn (process tree) by PID or session id
+  - `grok-after-turn.ps1`: reply pack (state, reply text, new images, git, summary)
 
 ## CLI cheat sheet (grok 1.0.50)
 | Need | Use |
