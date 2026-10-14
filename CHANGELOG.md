@@ -1,5 +1,16 @@
 # Changelog
 
+## v8 · plugin 0.3.0 · 2026-10-14
+Re-verified against **Grok Build `grok 1.0.55`** (alpha channel; stable was 1.0.52). Live test on Windows: new turn, resume, `--prompt-json` image in, interrupt mid-shell-command, after-turn pack, mission control. Helpers work unchanged.
+
+- **Result / `end` line:** now also carries `cwd` (the folder actually used, including a `-w` worktree) and `total_cost_usd` (+ `total_cost_usd_ticks`); `modelUsage` has per-model `costUSD`.
+- **Flags:** `--no-auto-update` and `--yolo` no longer appear in `--help` but are still accepted (checked on 1.0.55). `--allowed-tools`/`--allowedTools` alias `--allow`; `--disallowedTools` aliases `--deny`; `--disallowed-tools` takes model-facing names (`run_terminal_command`, `spawn_subagent`). New in help: `--verbatim`, `--json-schema`, `--disable-web-search`, `grok du`.
+- **Headless:** `grok -p` waits for background goals and reports their outcome (1.0.51); `--background-wait-timeout` caps it (release notes only). Prompt files with a byte-order mark work (1.0.52).
+- **Interrupt:** grok now stops its own shell commands when it quits or gets a signal (1.0.52); re-verified that `grok-interrupt.ps1` leaves no grok or tool process and no `end` line.
+- **Sessions:** `grok sessions list`/`/resume` include worktree sessions from the same subfolder (1.0.51); `-w -r` forks run in the worktree path (1.0.54); a corrupt `active_sessions.json` is backed up and salvaged (1.0.54). Storage map adds `chat_history.jsonl`, `prompt_context.json`, `rewind_points.jsonl` and their `.lock` files.
+- **Export:** `grok export <id> <out>` refuses to overwrite an existing file (1.0.52). `/share` and session sharing were removed (1.0.51).
+- `grok-mission-control.ps1` default `-VerifiedVersion` is now 1.0.55. Template v8 staged (not public yet).
+
 ## v7 template staged · 2026-10-08
 - Grok Bot template v7 is **staged for publishing (not public yet)**; the public link still serves v6. Contents: `docs/TEMPLATE.md`.
 - New first-run skill `skills/rgb-getting-started/SKILL.md`: pick the linked PC, check grok and sign-in, install helpers with consent, pin a project, run the drift check, and make sure exactly one self-update routine exists.

@@ -1,6 +1,6 @@
 # Optional bridge helpers (`~/.grok-bridge`)
 
-Live-tested with `grok 1.0.50` on PowerShell 7 (parse-checked on Windows PowerShell 5.1): new turn, resume, image in, interrupt, after-turn, mission control.
+Live-tested with `grok 1.0.50` and re-tested unchanged on `grok 1.0.55` (2026-10-14) on PowerShell 7 (parse-checked on Windows PowerShell 5.1): new turn, resume, image in, interrupt, after-turn, mission control.
 
 | Script | Role |
 |--------|------|
@@ -13,7 +13,7 @@ Copy from `helpers/` into `~/.grok-bridge/` on the linked PC. Paths stay portabl
 
 ## Typical flow
 ```powershell
-& "$HOME\.grok-bridge\grok-mission-control.ps1" -VerifiedVersion 1.0.50   # DRIFT=newer → re-derive per the skill's "Stay current"
+& "$HOME\.grok-bridge\grok-mission-control.ps1" -VerifiedVersion 1.0.55   # DRIFT=newer → re-derive per the skill's "Stay current"
 & "$HOME\.grok-bridge\grok-turn.ps1" -Cwd 'C:\path\proj' -SessionId '<uuid>' -Prompt 'next step'
 #   → PID=… LOG=…ndjson META=…json ; poll Get-Process -Id PID + new LOG lines, post milestones
 & "$HOME\.grok-bridge\grok-interrupt.ps1" -ProcessId <PID>          # if the user says stop

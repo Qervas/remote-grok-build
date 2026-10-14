@@ -6,11 +6,11 @@ description: >-
   optionally suggest chief→per-project workers and an RGB channel for parallel
   work.
 ---
-# Remote Grok Build bridge (template v7)
+# Remote Grok Build bridge (template v8)
 
 Drive **local Grok Build** (`grok`) on a registered user computer from Grok Bot chat: mission-control cockpit, same-session resume, live streaming, interrupt, bidirectional media.
 
-**Verified against:** `grok 1.0.50` (live-tested 2026-10-08: new turn, resume, image in, interrupt). v6 targeted the ~1.0.3x/1.0.40 CLI. Before using the cheat sheet, run the drift check in **Stay current** below.
+**Verified against:** `grok 1.0.55` (live-tested 2026-10-14 on the alpha channel: new turn, resume, image in, interrupt, after-turn, mission control; stable channel was 1.0.52). v7 targeted 1.0.50, v6 the ~1.0.3x/1.0.40 CLI. Before using the cheat sheet, run the drift check in **Stay current** below.
 
 **Optional (suggested at scale):** chief → per-project worker bots, plus an optional shared channel for them.
 
@@ -83,32 +83,35 @@ The channel is for **bot coordination**, not a replacement for mission-control w
   - `grok-interrupt.ps1`: stop a headless turn (process tree) by PID or session id
   - `grok-after-turn.ps1`: reply pack (state, reply text, new images, git, summary)
 
-## CLI cheat sheet (grok 1.0.50)
+## CLI cheat sheet (grok 1.0.55)
 | Need | Use |
 |------|-----|
 | Version / update state | `grok --version` · `grok update --check --json` (don't run `grok update` unasked) |
-| List / search sessions | `grok sessions list -n 20` · `grok sessions search "<q>" -n 20`. **Scoped to the current directory**, so run them from (or `--cwd`) the project folder. For an all-folders view, scan `~/.grok/sessions` (mission control). Never run `grok sessions delete` unasked. |
+| List / search sessions | `grok sessions list -n 20` · `grok sessions search "<q>" -n 20`. **Scoped to the current directory**, so `Set-Location` to the project folder first (the subcommand has no `--cwd`). Worktree sessions started from the same subfolder are included; sibling submodules are hidden. For an all-folders view, scan `~/.grok/sessions` (mission control). Never run `grok sessions delete` unasked. |
 | Resume a turn | `grok --cwd '<cwd>' -r '<session_id>' -p '<text>'`. `-r` also takes a title (case-insensitive, current dir only), but scripts should pass the UUID. `-c` = most recent in cwd. |
-| Fork instead of append | add `--fork-session` (optionally `-s <new-uuid>` to name the fork) |
+| Fork instead of append | add `--fork-session` (optionally `-s <new-uuid>` to name the fork). With `-w -r` the fork runs in the new worktree's path (1.0.54+). |
 | New session with a known id | `-s <uuid>` (must be a fresh valid UUID; **no longer upserts or resumes**) |
-| Long / quoted prompt | `--prompt-file <path>` (avoids PowerShell quoting); `--prompt-json '<blocks>'` for content blocks (images) |
-| Live progress | `--output-format streaming-json` (type-tagged NDJSON; verified on 1.0.50) |
+| Long / quoted prompt | `--prompt-file <path>` (avoids PowerShell quoting; a leading byte-order mark is stripped since 1.0.52); `--prompt-json '<blocks>'` for content blocks (images; pasted images over 50 MB are rejected) · `--verbatim` sends the prompt exactly as given |
+| Live progress | `--output-format streaming-json` (type-tagged NDJSON; verified on 1.0.55) |
 | Messages-API stream | `--output-format streaming-messages-json` [+ `--include-partial-messages` for deltas] |
-| Final result + session id + spend | `--output-format json` → `text`, `stopReason`, `sessionId`, `usage`, `num_turns`, `modelUsage` |
-| Approvals | `--always-approve` (alias `--yolo`, = `--permission-mode bypassPermissions`). Others: `default`, `acceptEdits`, `auto`, `dontAsk`, `plan`. `--allow`/`--deny` rules still apply. |
+| Final result + session id + spend | `--output-format json` → `text`, `stopReason`, `sessionId`, `cwd` (the folder actually used, including a `-w` worktree), `usage`, `num_turns`, `total_cost_usd`, `modelUsage` · `--json-schema '<schema>'` for structured output (implies `json`) |
+| Approvals | `--always-approve` (alias `--yolo`, = `--permission-mode bypassPermissions`). Others: `default`, `acceptEdits`, `auto`, `dontAsk`, `plan`. `--allow`/`--deny` rules still apply (`--allowed-tools`/`--allowedTools` alias `--allow`, `--disallowedTools` aliases `--deny`). |
 | Model / effort | `-m <model>` (`grok models` lists them) · `--effort none…max` (model-dependent, e.g. `xhigh`) |
-| Guardrails | `--max-turns N`, `--tools`, `--disallowed-tools`, `--rules`, `--sandbox <profile>`, `--no-subagents` |
-| Quiet updates during a turn | `--no-auto-update` (or env `GROK_DISABLE_AUTOUPDATER=1`) |
-| Transcript / spend | `grok export <id> [out.md]` · `grok usage <id> [turn]` |
+| Guardrails | `--max-turns N`, `--tools`, `--disallowed-tools` (takes model-facing names like `run_terminal_command`, `spawn_subagent`), `--rules`, `--sandbox <profile>`, `--no-subagents`, `--disable-web-search` |
+| Background goals | Headless `-p` now waits for background goals to finish and reports their outcome (1.0.51+). `--background-wait-timeout` caps that wait (from the release notes; not shown in `--help`). |
+| Quiet updates during a turn | `--no-auto-update` (or env `GROK_DISABLE_AUTOUPDATER=1`). Not listed in `--help` on 1.0.55, but still accepted there (verified). |
+| Transcript / spend | `grok export <id> [out.md]` (`out.md` must not exist yet; export refuses to overwrite since 1.0.52) · `grok usage <id> [turn]` · `grok du` = disk use of `~/.grok` |
 | Worktrees | `-w [name]` (+ `--worktree-ref <ref>`); with a remote session `--restore-code` |
 | Agent dashboard (TUI) | `grok dashboard` (local screen only) |
+| Sharing | `/share` and session sharing were removed from the CLI in 1.0.51; send transcripts with `grok export` instead |
 
 ## Storage map (`~/.grok`)
 | Path | Role |
 |------|------|
-| `active_sessions.json` | Open TUI sessions: `session_id` / `pid` / `cwd` / `opened_at` (may be stale; check the pid) |
+| `active_sessions.json` | Open TUI sessions: `session_id` / `pid` / `cwd` / `opened_at` (may be stale; check the pid). Since 1.0.54 a corrupt file is backed up and salvaged by grok, so tolerate unreadable rows instead of failing |
 | `sessions/<url-encoded-cwd>/<session-id>/` | All sessions (`[uri]::EscapeDataString(cwd)`) |
 | `…/summary.json` | Index entry: `info.id`, `info.cwd`, `generated_title`, `session_summary`, `last_turn_summary`, `last_recap`, `current_model_id`, `reasoning_effort`, `agent_name`, `head_branch`, `updated_at`/`last_active_at`, `num_chat_messages` |
+| `…/chat_history.jsonl` · `prompt_context.json` · `rewind_points.jsonl` | Chat log, prompt context, rewind points (`*.lock` files sit beside them; never delete them) |
 | `…/updates.jsonl` | Authoritative ACP update log (`_x.ai/session/update` lines: `agent_message_chunk`, `tool_call`, `turn_completed`, `session_recap`, …) |
 | `…/events.jsonl` · `usage.json` · `signals.json` | Event log, token/cost usage, turn signals |
 | `…/images/` · `…/assets/` | Session media. Both also hold what the **user** sent: TUI pastes land in `images/`, `--prompt-json` image blocks land in `assets/`. `grok-after-turn.ps1 -Meta` skips this turn's inbound files so they aren't echoed back. |
@@ -143,21 +146,21 @@ Direct form (blocks until done):
 ```powershell
 grok --cwd '<cwd>' -r '<session_id>' --prompt-file '<prompt.txt>' --always-approve --no-auto-update --output-format streaming-json
 ```
-Read `streaming-json` by switching on `type` (observed on 1.0.50):
+Read `streaming-json` by switching on `type` (observed on 1.0.50, re-checked on 1.0.55):
 - `text` / `thought`: response / reasoning chunks in `data` (token-sized; concatenate)
 - `tool_call`: `toolCallId`, `toolName`, `title`, `kind`, `status:"pending"`, `rawInput`. Seen names: `write` (kind `write`, `rawInput.file_path`/`content`), `run_terminal_command` (kind `execute`, `rawInput.command`), `read_file`, `search_replace`, `grep`, `list_dir`
 - `tool_call_update`: same `toolCallId`; `status` goes `null` → `in_progress` → `completed`/`failed`. `content` holds diffs (`type:"diff"`, `path`, `oldText`, `newText`) or text. Shell updates **resend the full accumulated output** each time (`content[].content.text` plus a `rawOutput.output` byte array), so keep only the latest per `toolCallId` and show its tail.
 - `available_commands`: tool/slash lists, repeated dozens of times per turn. Ignore.
 - `usage`: per model response (`usage`, `signature`; `messageId`/`stopReason` may be absent)
 - `plan` (`entries`), `max_turns_reached`, `auto_compact_*`
-- `end`: last line, with `stopReason` (`end_turn`, `max_tokens`, `max_turn_requests`, `refusal`, `cancelled`), `sessionId`, `requestId`, `usage`, `num_turns`, `modelUsage`, cost when reported
+- `end`: last line, with `stopReason` (`end_turn`, `max_tokens`, `max_turn_requests`, `refusal`, `cancelled`), `sessionId`, `requestId`, `cwd`, `usage`, `num_turns`, `total_cost_usd` (+ `total_cost_usd_ticks`), `modelUsage` (per model, with `costUSD`)
 - `error`: `message`, non-zero exit
 Treat unknown types as non-fatal. (Fallback only: if a future build emits raw ACP lines with `sessionUpdate` instead of `type`, map `agent_message_chunk`→text, `agent_thought_chunk`→thought, the rest by name, and re-derive per **Stay current**.)
 
 Post **sparse** milestones (tool started/finished, plan changes), not every chunk. Exit codes: 0 ok, 1 error, 130 SIGINT, 143 SIGTERM. A force-stopped turn writes **no `end` line**: process gone + no `end` = stopped.
 
 ## 3) Stop / interrupt
-`grok-interrupt.ps1 -ProcessId <PID from grok-turn>` (or `-SessionId <id>`) kills the matching **headless** grok process **and its child tree**: tool shells and their children (verified: `pwsh` → `PING.EXE` gone) plus the MCP servers that turn started. It never touches TUIs unless `-IncludeTui` is passed explicitly, and refuses with no target. Session state is kept up to the last completed tool call; file edits are not rolled back. Resume later with `-r <id> -p "continue"`. In multi-bot mode the chief forwards stop to the owning worker.
+`grok-interrupt.ps1 -ProcessId <PID from grok-turn>` (or `-SessionId <id>`) kills the matching **headless** grok process **and its child tree**: tool shells and their children (verified: `pwsh` → `PING.EXE` gone) plus the MCP servers that turn started. It never touches TUIs unless `-IncludeTui` is passed explicitly, and refuses with no target. Session state is kept up to the last completed tool call; file edits are not rolled back. Since 1.0.52 grok also stops its own shell commands when it quits or gets a signal, so a stop leaves no orphaned tool shells (re-verified on 1.0.55: grok and `PING.EXE` both gone, no `end` line). Resume later with `-r <id> -p "continue"`. In multi-bot mode the chief forwards stop to the owning worker.
 
 (Grok's ACP interface supports targeted per-response cancel for SDK clients; the CLI bridge uses process stop.)
 
@@ -201,6 +204,6 @@ Model/effort (`-m`, `--effort`), fork vs append (`--fork-session`), worktree tur
 - Require a live hold before resuming idle sessions
 - Use `-s` to resume (it only creates); use `-r`/`-c`
 - Kill TUIs or match grok by process name alone; kill only the headless PID tree you started
-- Run `grok update` (even from the daily watch), `grok sessions delete`, `grok logout`, or `grok worktree rm` unasked
+- Run `grok update` (even from the daily watch), `grok sessions delete`, `grok logout`, `grok worktree rm`, or `grok leader kill` unasked
 - Create more than one self-update routine per bot
 - Use public tunnels or relays; hide idle sessions; leave images on disk only; paste grok secrets; use Cursor CloudAgent for this

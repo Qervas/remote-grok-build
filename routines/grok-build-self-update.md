@@ -1,6 +1,6 @@
 # Routine: Grok Build self-update
 
-Ships with the Remote Grok Build Grok Bot template (v7). The bot runs it daily so its skill stays in step with the installed Grok Build (`grok`) CLI, without anyone saying "update".
+Ships with the Remote Grok Build Grok Bot template (v8). The bot runs it daily so its skill stays in step with the installed Grok Build (`grok`) CLI, without anyone saying "update".
 
 | Field | Value |
 |-------|-------|
