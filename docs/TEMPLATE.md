@@ -1,6 +1,6 @@
-# Grok Bot template contents (v8)
+# Grok Bot template contents (v9)
 
-**Status:** v8 is staged for publishing and **not public yet**. The public link in the README still serves v6.
+**Status:** v9 is staged for publishing and **not public yet**. The public link in the README still serves v6.
 
 | Part | Source in this repo |
 |------|---------------------|

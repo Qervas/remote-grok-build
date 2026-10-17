@@ -1,5 +1,13 @@
 # Changelog
 
+## v9 · plugin 0.4.0 · 2026-10-17
+Brought up to date with **Grok Build `grok 1.0.62`** (stable/alpha/enterprise channel pointers 2026-10-16). Updated from public release notes, npm `@xai-official/grok@1.0.62`, and `grok update --check --json` on Tudorbox. **Not live-retested on 1.0.62 yet** — Tudorbox still had 1.0.55 installed (alpha, auto-update on) when this landed; helpers are unchanged pending that install.
+
+- **Resume (bridge-relevant):** `-r` / `/resume` title matching ignores word separators and word order (1.0.59–1.0.62); an exact single ID/title match opens directly instead of always opening the picker (1.0.61+); a miss reports immediately / suggests similar titles instead of trying remote restore (1.0.60). Scripts should still pass the UUID.
+- **Headless:** `grok -p` now also waits for the follow-up turn a finished background task starts before exiting (1.0.62). `--background-wait-timeout` that stops pending work exits with an **error** instead of success. Existing `grok-turn.ps1` PID waits already cover the longer exit.
+- **TUI-only (not bridge):** resume picker search, dashboard peek text selection, workflow roster scroll, Windows hook spawn error text — noted, no helper changes.
+- `grok-mission-control.ps1` default `-VerifiedVersion` is now 1.0.62. Template v9 staged (not public yet).
+
 ## v8 · plugin 0.3.0 · 2026-10-14
 Re-verified against **Grok Build `grok 1.0.55`** (alpha channel; stable was 1.0.52). Live test on Windows: new turn, resume, `--prompt-json` image in, interrupt mid-shell-command, after-turn pack, mission control. Helpers work unchanged.
 

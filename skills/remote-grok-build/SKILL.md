@@ -1,16 +1,16 @@
 ---
-name: remote-grok-build
+name: Remote Grok Build
 description: >-
   Use this when bridging Grok Bot chat to local Grok Build (the grok CLI) on a
   linked Windows PC: mission control, streaming turns, interrupt, media packs;
   optionally suggest chief→per-project workers and an RGB channel for parallel
   work.
 ---
-# Remote Grok Build bridge (template v8)
+# Remote Grok Build bridge (template v9)
 
 Drive **local Grok Build** (`grok`) on a registered user computer from Grok Bot chat: mission-control cockpit, same-session resume, live streaming, interrupt, bidirectional media.
 
-**Verified against:** `grok 1.0.55` (live-tested 2026-10-14 on the alpha channel: new turn, resume, image in, interrupt, after-turn, mission control; stable channel was 1.0.52). v7 targeted 1.0.50, v6 the ~1.0.3x/1.0.40 CLI. Before using the cheat sheet, run the drift check in **Stay current** below.
+**Verified against:** `grok 1.0.62` (stable/alpha/enterprise pointers 2026-10-16; cheat sheet updated 2026-10-17 from public release notes + npm/`grok update --check`). Tudorbox still had **1.0.55** installed that morning (alpha channel, auto-update on), so helpers were not live-retested on 1.0.62 yet — re-check `grok --help` after it installs. v8 targeted 1.0.55, v7 1.0.50, v6 the ~1.0.3x/1.0.40 CLI. Before using the cheat sheet, run the drift check in **Stay current** below.
 
 **Optional (suggested at scale):** chief → per-project worker bots, plus an optional shared channel for them.
 
@@ -83,12 +83,12 @@ The channel is for **bot coordination**, not a replacement for mission-control w
   - `grok-interrupt.ps1`: stop a headless turn (process tree) by PID or session id
   - `grok-after-turn.ps1`: reply pack (state, reply text, new images, git, summary)
 
-## CLI cheat sheet (grok 1.0.55)
+## CLI cheat sheet (grok 1.0.62)
 | Need | Use |
 |------|-----|
 | Version / update state | `grok --version` · `grok update --check --json` (don't run `grok update` unasked) |
 | List / search sessions | `grok sessions list -n 20` · `grok sessions search "<q>" -n 20`. **Scoped to the current directory**, so `Set-Location` to the project folder first (the subcommand has no `--cwd`). Worktree sessions started from the same subfolder are included; sibling submodules are hidden. For an all-folders view, scan `~/.grok/sessions` (mission control). Never run `grok sessions delete` unasked. |
-| Resume a turn | `grok --cwd '<cwd>' -r '<session_id>' -p '<text>'`. `-r` also takes a title (case-insensitive, current dir only), but scripts should pass the UUID. `-c` = most recent in cwd. |
+| Resume a turn | `grok --cwd '<cwd>' -r '<session_id>' -p '<text>'`. `-r` also takes a title (current dir). Since 1.0.59–1.0.62: word separators and word order are ignored (`fix-login-bug` finds "Fix login bug"; every typed word must appear), an exact single ID/title match opens directly (no picker), and a miss lists suggestions / reports immediately instead of trying remote restore. Scripts should still pass the UUID. `-c` = most recent in cwd. |
 | Fork instead of append | add `--fork-session` (optionally `-s <new-uuid>` to name the fork). With `-w -r` the fork runs in the new worktree's path (1.0.54+). |
 | New session with a known id | `-s <uuid>` (must be a fresh valid UUID; **no longer upserts or resumes**) |
 | Long / quoted prompt | `--prompt-file <path>` (avoids PowerShell quoting; a leading byte-order mark is stripped since 1.0.52); `--prompt-json '<blocks>'` for content blocks (images; pasted images over 50 MB are rejected) · `--verbatim` sends the prompt exactly as given |
@@ -98,8 +98,8 @@ The channel is for **bot coordination**, not a replacement for mission-control w
 | Approvals | `--always-approve` (alias `--yolo`, = `--permission-mode bypassPermissions`). Others: `default`, `acceptEdits`, `auto`, `dontAsk`, `plan`. `--allow`/`--deny` rules still apply (`--allowed-tools`/`--allowedTools` alias `--allow`, `--disallowedTools` aliases `--deny`). |
 | Model / effort | `-m <model>` (`grok models` lists them) · `--effort none…max` (model-dependent, e.g. `xhigh`) |
 | Guardrails | `--max-turns N`, `--tools`, `--disallowed-tools` (takes model-facing names like `run_terminal_command`, `spawn_subagent`), `--rules`, `--sandbox <profile>`, `--no-subagents`, `--disable-web-search` |
-| Background goals | Headless `-p` now waits for background goals to finish and reports their outcome (1.0.51+). `--background-wait-timeout` caps that wait (from the release notes; not shown in `--help`). |
-| Quiet updates during a turn | `--no-auto-update` (or env `GROK_DISABLE_AUTOUPDATER=1`). Not listed in `--help` on 1.0.55, but still accepted there (verified). |
+| Background goals / tasks | Headless `-p` waits for background goals (1.0.51+) **and**, since 1.0.62, for the follow-up turn a finished background task starts before exiting. `--background-wait-timeout` caps that wait and now exits with an **error** (not success) when it stops pending work (release notes; not shown in `--help` on 1.0.55). Bridge scripts that wait on the process PID already cover this longer exit. |
+| Quiet updates during a turn | `--no-auto-update` (or env `GROK_DISABLE_AUTOUPDATER=1`). Not listed in `--help` on 1.0.55; still accepted there (verified). Re-check after 1.0.62 installs. |
 | Transcript / spend | `grok export <id> [out.md]` (`out.md` must not exist yet; export refuses to overwrite since 1.0.52) · `grok usage <id> [turn]` · `grok du` = disk use of `~/.grok` |
 | Worktrees | `-w [name]` (+ `--worktree-ref <ref>`); with a remote session `--restore-code` |
 | Agent dashboard (TUI) | `grok dashboard` (local screen only) |
@@ -146,7 +146,7 @@ Direct form (blocks until done):
 ```powershell
 grok --cwd '<cwd>' -r '<session_id>' --prompt-file '<prompt.txt>' --always-approve --no-auto-update --output-format streaming-json
 ```
-Read `streaming-json` by switching on `type` (observed on 1.0.50, re-checked on 1.0.55):
+Read `streaming-json` by switching on `type` (observed on 1.0.50, re-checked on 1.0.55; no stream-format change noted through 1.0.62):
 - `text` / `thought`: response / reasoning chunks in `data` (token-sized; concatenate)
 - `tool_call`: `toolCallId`, `toolName`, `title`, `kind`, `status:"pending"`, `rawInput`. Seen names: `write` (kind `write`, `rawInput.file_path`/`content`), `run_terminal_command` (kind `execute`, `rawInput.command`), `read_file`, `search_replace`, `grep`, `list_dir`
 - `tool_call_update`: same `toolCallId`; `status` goes `null` → `in_progress` → `completed`/`failed`. `content` holds diffs (`type:"diff"`, `path`, `oldText`, `newText`) or text. Shell updates **resend the full accumulated output** each time (`content[].content.text` plus a `rawOutput.output` byte array), so keep only the latest per `toolCallId` and show its tail.
