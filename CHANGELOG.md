@@ -1,5 +1,12 @@
 # Changelog
 
+## v9 · plugin 0.4.1 · 2026-10-18
+Re-verified against **Grok Build `grok 1.0.63`** (alpha, 2026-10-17; stable/enterprise still 1.0.62), now installed on the Windows test PC. This is the live retest v9 was waiting for: new headless turn, resume by UUID, `json` and `streaming-json` output, `grok-turn.ps1` → `grok-interrupt.ps1` mid shell command (grok and its tool shell both stopped), `grok-after-turn.ps1`, and mission-control drift. Helpers work unchanged.
+
+- **Nothing bridge-breaking in 1.0.63.** Its changes are memory (always the concise `MEMORY.md` index; `[memory_v2] compact_index_enabled` no longer has an effect), per-session/subagent Rex status records, `grok worktree list/show` repair hints, command hooks with an `args` list (no shell), `/fork` keeping `-m`/`--effort`, plan-review input fixes, and custom Chat Completions models with MCP.
+- **Cheat sheet:** `json` output also carries `requestId`, `thought` and `total_cost_usd_ticks`; `streaming-json` line types seen: `text`, `thought`, `tool_call`, `tool_call_update`, `usage`, `available_commands`, `end`. `-r` help now says a sole renamed match wins among duplicate titles, otherwise resume fails as ambiguous. `--no-auto-update` and `--background-wait-timeout` are still accepted though not in `--help`.
+- `grok-mission-control.ps1` default `-VerifiedVersion` is now 1.0.63. Template v9 still staged (not public yet).
+
 ## v9 · plugin 0.4.0 · 2026-10-17
 Brought up to date with **Grok Build `grok 1.0.62`** (stable/alpha/enterprise channel pointers 2026-10-16). Updated from public release notes, npm `@xai-official/grok@1.0.62`, and `grok update --check --json` on Tudorbox. **Not live-retested on 1.0.62 yet** — Tudorbox still had 1.0.55 installed (alpha, auto-update on) when this landed; helpers are unchanged pending that install.
 
