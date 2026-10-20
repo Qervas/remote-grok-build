@@ -10,7 +10,7 @@ description: >-
 
 Drive **local Grok Build** (`grok`) on a registered user computer from Grok Bot chat: mission-control cockpit, same-session resume, live streaming, interrupt, bidirectional media.
 
-**Verified against:** `grok 1.0.63` (alpha, 2026-10-18; stable/enterprise were 1.0.62). Live-tested on Windows 2026-10-18: new headless turn, resume by UUID, `json` and `streaming-json` output, `grok-turn.ps1` → `grok-interrupt.ps1` mid shell command, `grok-after-turn.ps1`, mission-control drift. v9 first targeted 1.0.62 from release notes only, v8 1.0.55, v7 1.0.50, v6 the ~1.0.3x/1.0.40 CLI. Before using the cheat sheet, run the drift check in **Stay current** below.
+**Verified against:** `grok 1.0.64` (alpha, 2026-10-20; stable/enterprise still 1.0.62). 1.0.64 was checked on 2026-10-20 by diffing its `--help`, subcommand help (`agent`, `sessions`, `export`, `update`, `leader`) and built-in strings against 1.0.63: the only CLI change is a new `grok worker` command (run the PC as a Cursor private worker), and the headless, resume, output-format, streaming event and `~/.grok` session layout are unchanged; `--no-auto-update` and `--background-wait-timeout` still parse. Last live test on Windows was 1.0.63 on 2026-10-18: new headless turn, resume by UUID, `json` and `streaming-json` output, `grok-turn.ps1` → `grok-interrupt.ps1` mid shell command, `grok-after-turn.ps1`, mission-control drift. A PC still on 1.0.63 shows `DRIFT=older` until grok's auto-update installs 1.0.64; that is harmless. v9 first targeted 1.0.62 from release notes only, v8 1.0.55, v7 1.0.50, v6 the ~1.0.3x/1.0.40 CLI. Before using the cheat sheet, run the drift check in **Stay current** below.
 
 **Optional (suggested at scale):** chief → per-project worker bots, plus an optional shared channel for them.
 
@@ -83,7 +83,7 @@ The channel is for **bot coordination**, not a replacement for mission-control w
   - `grok-interrupt.ps1`: stop a headless turn (process tree) by PID or session id
   - `grok-after-turn.ps1`: reply pack (state, reply text, new images, git, summary)
 
-## CLI cheat sheet (grok 1.0.63)
+## CLI cheat sheet (grok 1.0.63–1.0.64)
 | Need | Use |
 |------|-----|
 | Version / update state | `grok --version` · `grok update --check --json` (don't run `grok update` unasked) |
@@ -98,8 +98,8 @@ The channel is for **bot coordination**, not a replacement for mission-control w
 | Approvals | `--always-approve` (alias `--yolo`, = `--permission-mode bypassPermissions`). Others: `default`, `acceptEdits`, `auto`, `dontAsk`, `plan`. `--allow`/`--deny` rules still apply (`--allowed-tools`/`--allowedTools` alias `--allow`, `--disallowedTools` aliases `--deny`). |
 | Model / effort | `-m <model>` (`grok models` lists them) · `--effort none…max` (model-dependent, e.g. `xhigh`) |
 | Guardrails | `--max-turns N`, `--tools`, `--disallowed-tools` (takes model-facing names like `run_terminal_command`, `spawn_subagent`), `--rules`, `--sandbox <profile>`, `--no-subagents`, `--disable-web-search` |
-| Background goals / tasks | Headless `-p` waits for background goals (1.0.51+) **and**, since 1.0.62, for the follow-up turn a finished background task starts before exiting. `--background-wait-timeout` caps that wait and now exits with an **error** (not success) when it stops pending work (still not shown in `--help`; accepted on 1.0.63, verified). Bridge scripts that wait on the process PID already cover this longer exit. |
-| Quiet updates during a turn | `--no-auto-update` (or env `GROK_DISABLE_AUTOUPDATER=1`). Not listed in `--help`; still accepted on 1.0.63 (verified 2026-10-18). |
+| Background goals / tasks | Headless `-p` waits for background goals (1.0.51+) **and**, since 1.0.62, for the follow-up turn a finished background task starts before exiting. `--background-wait-timeout` caps that wait and now exits with an **error** (not success) when it stops pending work (still not shown in `--help`; accepted on 1.0.63 and 1.0.64, verified). Bridge scripts that wait on the process PID already cover this longer exit. |
+| Quiet updates during a turn | `--no-auto-update` (or env `GROK_DISABLE_AUTOUPDATER=1`). Not listed in `--help`; still accepted on 1.0.63 (verified 2026-10-18) and 1.0.64 (2026-10-20). |
 | Transcript / spend | `grok export <id> [out.md]` (`out.md` must not exist yet; export refuses to overwrite since 1.0.52) · `grok usage <id> [turn]` · `grok du` = disk use of `~/.grok` |
 | Worktrees | `-w [name]` (+ `--worktree-ref <ref>`); with a remote session `--restore-code` |
 | Agent dashboard (TUI) | `grok dashboard` (local screen only) |
@@ -204,6 +204,6 @@ Model/effort (`-m`, `--effort`), fork vs append (`--fork-session`), worktree tur
 - Require a live hold before resuming idle sessions
 - Use `-s` to resume (it only creates); use `-r`/`-c`
 - Kill TUIs or match grok by process name alone; kill only the headless PID tree you started
-- Run `grok update` (even from the daily watch), `grok sessions delete`, `grok logout`, `grok worktree rm`, or `grok leader kill` unasked
+- Run `grok update` (even from the daily watch), `grok sessions delete`, `grok logout`, `grok worktree rm`, `grok leader kill`, or `grok worker start` (registers the PC as a Cursor private worker, 1.0.64+) unasked
 - Create more than one self-update routine per bot
 - Use public tunnels or relays; hide idle sessions; leave images on disk only; paste grok secrets; use Cursor CloudAgent for this

@@ -1,5 +1,13 @@
 # Changelog
 
+## v9 · plugin 0.4.2 · 2026-10-20
+Re-verified against **Grok Build `grok 1.0.64`** (alpha, published 2026-10-19 22:52 UTC; stable/enterprise still 1.0.62). Checked by diffing the 1.0.64 and 1.0.63 Linux builds from npm: `--help`, `agent`/`sessions`/`export`/`update`/`leader` help, and built-in strings. **Not live-tested on Windows yet**: the test PC still had 1.0.63 installed (alpha, auto-update on, `updateAvailable` true). Helpers unchanged apart from the default below.
+
+- **Nothing bridge-breaking in 1.0.64.** Headless flags, `-r`/`-s`/`--fork-session`, output formats, streaming event names and the `~/.grok` session layout are unchanged. `--no-auto-update` and `--background-wait-timeout` still parse though not in `--help`.
+- **New:** `grok worker start|stop|status` (also `grok leader worker`) registers the PC as a Cursor private worker for Cloud Agents. Added to the skill's "Do not ... unasked" list; the bridge never uses it.
+- **Other changes seen in built-in text (not bridge):** hook-trust hints reworded ("Trust the folder first"), subagent/workflow steps that ask for worktree isolation run in the session's folder instead, and worktree requests that can't be met refuse cleanly.
+- `grok-mission-control.ps1` default `-VerifiedVersion` is now 1.0.64 (a PC still on 1.0.63 prints `DRIFT=older` until auto-update installs 1.0.64). Template v9 still staged (not public yet).
+
 ## v9 · plugin 0.4.1 · 2026-10-18
 Re-verified against **Grok Build `grok 1.0.63`** (alpha, 2026-10-17; stable/enterprise still 1.0.62), now installed on the Windows test PC. This is the live retest v9 was waiting for: new headless turn, resume by UUID, `json` and `streaming-json` output, `grok-turn.ps1` → `grok-interrupt.ps1` mid shell command (grok and its tool shell both stopped), `grok-after-turn.ps1`, and mission-control drift. Helpers work unchanged.
 

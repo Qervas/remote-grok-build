@@ -7,7 +7,7 @@ param(
   [int]$MaxIdleFolders = 12,
   [string]$OutJson = "",
   # The skill's "Verified against" grok version; pass the value from your skill copy.
-  [string]$VerifiedVersion = "1.0.63",
+  [string]$VerifiedVersion = "1.0.64",
   # Also ask the update server for the latest release (read-only; never installs).
   [switch]$CheckLatest
 )
