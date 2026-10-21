@@ -1,5 +1,15 @@
 # Changelog
 
+## v9 · plugin 0.4.3 · 2026-10-21
+Re-verified against **Grok Build `grok 1.0.66`** (alpha and enterprise, published 2026-10-20 22:33 UTC; 1.0.65 came out 19:35 UTC the same day; stable still 1.0.62). Checked by diffing the 1.0.66 and 1.0.64 Linux builds from npm: full help, `agent`/`sessions`/`export`/`update`/`leader`/`worker` help, the bundled user guide (`~/.grok/docs/user-guide`) and built-in strings. **Not live-tested on Windows yet**: the test PC still had 1.0.63 installed (alpha, auto-update on, `updateAvailable` true).
+
+- **Nothing bridge-breaking.** Flag set, headless, `-r`/`-s`/`--fork-session`, output formats, streaming event names and the `~/.grok` session layout are unchanged. `--no-auto-update` and `--background-wait-timeout` still parse.
+- **Help is now two-level.** `grok --help` and `grok <sub> --help`/`-h` print a short summary; the full descriptions moved to `grok help` and `grok help <sub>`. The skill's drift check and the self-update routine now re-read `grok help …` (plus the bundled user guide) instead of `--help`.
+- **Headless plan mode is real now.** `grok -p --permission-mode plan` holds plan mode for the whole run (also when resuming or forking): only the plan file can be edited and other edits are refused with exit code 0. Noted in the cheat sheet. On the daemon route a turn that keeps a plan may send one follow-up "build the plan" turn, and the `json` result's `usage` then covers both turns.
+- **Title matching:** `-r <title>` and the session picker match Chinese/Japanese titles by words that start inside a title word.
+- `grok cursor-worker` is hidden from help (`grok worker` remains); both added to the "Do not ... unasked" list.
+- `grok-mission-control.ps1` default `-VerifiedVersion` is now 1.0.66. Template v9 still staged (not public yet).
+
 ## v9 · plugin 0.4.2 · 2026-10-20
 Re-verified against **Grok Build `grok 1.0.64`** (alpha, published 2026-10-19 22:52 UTC; stable/enterprise still 1.0.62). Checked by diffing the 1.0.64 and 1.0.63 Linux builds from npm: `--help`, `agent`/`sessions`/`export`/`update`/`leader` help, and built-in strings. **Not live-tested on Windows yet**: the test PC still had 1.0.63 installed (alpha, auto-update on, `updateAvailable` true). Helpers unchanged apart from the default below.
 
