@@ -1,8 +1,8 @@
 {
   "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
   "name": "remote-grok-build",
-  "version": "0.4.3",
-  "description": "Bridge Grok Bot chat to local Grok Build on a linked PC: mission control, streaming turns, interrupt, media packs (template v9, grok 1.0.66); optional chief→workers and RGB channel.",
+  "version": "0.4.4",
+  "description": "Bridge Grok Bot chat to local Grok Build on a linked PC: mission control, streaming turns, interrupt, media packs (template v9, grok 1.0.67); optional chief→workers and RGB channel.",
   "author": {
     "name": "Qervas"
   },

@@ -1,5 +1,13 @@
 # Changelog
 
+## v9 · plugin 0.4.4 · 2026-10-22
+Re-verified against **Grok Build `grok 1.0.67`** (stable, alpha and enterprise all point to it; npm published 2026-10-21 17:21 UTC). **This is the first stable release past 1.0.62**, so stable users jump straight from 1.0.62 to 1.0.67 and get every 1.0.63–1.0.66 change noted in the entries below at once (two-level help, real headless plan mode, CJK title matching, `grok worker`). Checked by diffing the 1.0.67 and 1.0.66 Linux builds from npm: full `grok help` / `--help`, `grok help` for `agent`, `sessions`, `sessions list`, `export`, `update`, `usage`, `leader`, `worker`, `models`, `worktree`, `mcp`, and the bundled user guide. **Not live-tested on Windows yet**: the test PC still had 1.0.66 installed (alpha, auto-update on, `updateAvailable` true).
+
+- **Nothing bridge-breaking.** Resume (`-r`/`-c`/`-s`/`--fork-session`), output formats, streaming event names, prompt/image input and the `~/.grok` session layout are unchanged. `--no-auto-update` and `--background-wait-timeout` still parse.
+- **New flag `--add-dir <DIR>`** (repeatable): a new session can also work in extra folders beside `--cwd` (relative paths start from the working directory; refused for untrusted folders). It **cannot be combined with `-r`/`-c`** (exit 2); a resumed session keeps the folders it was created with. Added to the cheat sheet; `grok-turn.ps1` does not pass it (unchanged).
+- **Other changes (not bridge):** Tab / → accept a prompt suggestion in the TUI; worktrees now also inherit the main checkout's saved "always allow" answers (`[features] worktree_inherits_main_approvals`, default on); the session-end Stop hook runs alongside `SessionEnd` for at most 1.5 s; new config `features.ask_answer_rows`; telemetry gains `release_line` / `release_channel` attributes.
+- `grok-mission-control.ps1` default `-VerifiedVersion` is now 1.0.67. Template v9 still staged (not public yet).
+
 ## v9 · plugin 0.4.3 · 2026-10-21
 Re-verified against **Grok Build `grok 1.0.66`** (alpha and enterprise, published 2026-10-20 22:33 UTC; 1.0.65 came out 19:35 UTC the same day; stable still 1.0.62). Checked by diffing the 1.0.66 and 1.0.64 Linux builds from npm: full help, `agent`/`sessions`/`export`/`update`/`leader`/`worker` help, the bundled user guide (`~/.grok/docs/user-guide`) and built-in strings. **Not live-tested on Windows yet**: the test PC still had 1.0.63 installed (alpha, auto-update on, `updateAvailable` true).
 
