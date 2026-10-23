@@ -1,5 +1,16 @@
 # Changelog
 
+## v9 · plugin 0.4.5 · 2026-10-23
+Re-verified against **Grok Build `grok 1.0.69`** (alpha and enterprise; npm published 2026-10-23 02:07 UTC). 1.0.68 was alpha-only (2026-10-22 15:24 UTC); stable is still 1.0.67. Checked by diffing the 1.0.67, 1.0.68 and 1.0.69 Linux builds from npm: short and full help, `grok help <sub>` for every subcommand, the bundled user guide, and the official release notes. **Not live-tested on Windows yet**: the test PC still had 1.0.66 installed (alpha, auto-update on, `updateAvailable` true, latest 1.0.69).
+
+- **Nothing bridge-breaking.** Resume (`-r`/`-c`/`-s`/`--fork-session`), output formats, streaming event names, prompt/image input, `--add-dir` (still refused with `-r`/`-c`) and the `~/.grok` session layout are unchanged. `--no-auto-update` and `--background-wait-timeout` still parse.
+- **New hidden headless flag `--background-shell-timeout <secs>` (1.0.68):** stops only lingering background shells after the latest turn, keeps waiting on subagents, and doesn't fail the run. Daemon route only (otherwise grok exits with an error) and it can't be combined with `--background-wait-timeout`. Documented in the cheat sheet; `grok-turn.ps1` does not pass it.
+- **Auto-update safety (1.0.68):** running sessions no longer break when an update deletes their binary. Noted under the auto-update gotcha; the bridge keeps passing `--no-auto-update`.
+- **Daemon route resume (1.0.68):** a session ID also finds a session held at the same place in the repo's main checkout or a `grok -w` worktree.
+- **`--add-dir` permissions (1.0.69):** an added folder applies its own `deny`/`ask` rules but not its `allow` rules or `defaultMode`, so it can only make the session stricter.
+- **Other changes (not bridge):** `[keys] vim = "off"|"nav"` replaces `[ui] vim_mode`, `[ui] simple_mode` is retired (`grok doctor` flags both); dashboard `/resume` lists sessions from every folder; TUI image placeholders now show whether each image was sent; faster quit; `--oauth` help reworded; `grok worker` gains Cursor Self-Hosted Pool options (`--pool`, `--label(s-file)`, `--api-key`, `--auth-token-file`, `--single-use`, `--pool-name`, `--mint-github-token`, `--sync-dashboard-secrets`, `--on-session-start/-end`).
+- `grok-mission-control.ps1` default `-VerifiedVersion` is now 1.0.69. Template v9 still staged (not public yet).
+
 ## v9 · plugin 0.4.4 · 2026-10-22
 Re-verified against **Grok Build `grok 1.0.67`** (stable, alpha and enterprise all point to it; npm published 2026-10-21 17:21 UTC). **This is the first stable release past 1.0.62**, so stable users jump straight from 1.0.62 to 1.0.67 and get every 1.0.63–1.0.66 change noted in the entries below at once (two-level help, real headless plan mode, CJK title matching, `grok worker`). Checked by diffing the 1.0.67 and 1.0.66 Linux builds from npm: full `grok help` / `--help`, `grok help` for `agent`, `sessions`, `sessions list`, `export`, `update`, `usage`, `leader`, `worker`, `models`, `worktree`, `mcp`, and the bundled user guide. **Not live-tested on Windows yet**: the test PC still had 1.0.66 installed (alpha, auto-update on, `updateAvailable` true).
 
