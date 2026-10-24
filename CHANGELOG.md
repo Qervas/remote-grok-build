@@ -1,5 +1,15 @@
 # Changelog
 
+## v9 · plugin 0.4.6 · 2026-10-24
+Re-verified against **Grok Build `grok 1.0.70`** (stable and alpha; npm published 2026-10-23 17:38 UTC; enterprise is still 1.0.69). **This is the first stable release past 1.0.67**, so stable users get every 1.0.68–1.0.70 change at once. Checked by diffing the 1.0.69 and 1.0.70 Linux builds from npm: short and full help, `grok help <sub>` for every subcommand, and the bundled user guide (official release notes for 1.0.70 weren't published yet). **Not live-tested on Windows yet**: the test PC still had 1.0.69 installed (alpha, auto-update on, `updateAvailable` true, latest 1.0.70).
+
+- **Nothing bridge-breaking.** Resume (`-r`/`-c`/`-s`/`--fork-session`), output formats, streaming event names, prompt/image input, `--add-dir` and the `~/.grok` session layout are unchanged. `--no-auto-update` and `--background-wait-timeout` still parse.
+- **Update channel pin (1.0.70):** new env var `GROK_UPDATE_CHANNEL` (`stable`/`alpha`/`enterprise`) wins over `[cli] channel` and experiments (unless `requirements.toml` sets the channel); while it's set, `grok update --stable/--alpha/--enterprise/--channel` refuse to switch. Min/max version pins now also limit channel switches, and `grok inspect` shows the ceiling and floor. Noted under the auto-update gotcha.
+- **Experiments off switch (1.0.70):** `GROK_DISABLE_EXPERIMENTS=1` or `[experiments] enabled = false`; experiment include/exclude rules can also match a login email.
+- **Plugins (1.0.70):** skills or commands that are symlinks pointing outside the plugin folder are skipped, and on Windows so are skill files whose full path is over 260 characters. This repo has no symlinks and short paths, so nothing to change.
+- **Other changes (not bridge):** `grok worker` gains a `controller` subcommand and `--clone-git-repos`, `--identity-socket`, `--management-addr`, `--idle-release-timeout` (Cursor Self-Hosted Pools); `--leader-socket` help mentions the unified daemon socket; execute cells can call MCP tools via `host.mcp` on the daemon route; team admins can opt a team out of coding-data sharing.
+- `grok-mission-control.ps1` default `-VerifiedVersion` is now 1.0.70. Template v9 still staged (not public yet).
+
 ## v9 · plugin 0.4.5 · 2026-10-23
 Re-verified against **Grok Build `grok 1.0.69`** (alpha and enterprise; npm published 2026-10-23 02:07 UTC). 1.0.68 was alpha-only (2026-10-22 15:24 UTC); stable is still 1.0.67. Checked by diffing the 1.0.67, 1.0.68 and 1.0.69 Linux builds from npm: short and full help, `grok help <sub>` for every subcommand, the bundled user guide, and the official release notes. **Not live-tested on Windows yet**: the test PC still had 1.0.66 installed (alpha, auto-update on, `updateAvailable` true, latest 1.0.69).
 
