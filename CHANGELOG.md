@@ -1,5 +1,14 @@
 # Changelog
 
+## v9 · plugin 0.4.7 · 2026-10-27
+Re-verified against **Grok Build `grok 1.0.71`** (alpha; npm published 2026-10-26 22:03 UTC; stable is still 1.0.70, enterprise 1.0.69). Checked by diffing the 1.0.70 and 1.0.71 Linux builds from npm: short and full help, `grok help <sub>` for every subcommand, and the bundled user guide. **Not live-tested on Windows**: the test PC was offline during the check.
+
+- **Nothing bridge-breaking.** Resume (`-r`/`-c`/`-s`/`--fork-session`), output formats, streaming event names, prompt/image input, `--add-dir` and the `~/.grok` session layout are unchanged. `--no-auto-update` and `--background-wait-timeout` still parse.
+- **Export (1.0.71):** messages between agents print under `## you → <subagent>` / `## <subagent> → you` headings, with a status when a send didn't land. Transcripts of sessions without subagents are unchanged.
+- **Update-channel experiments (1.0.71):** a channel experiment arm is now a temporary override; `grok update --stable/--alpha/--enterprise/--channel` leaves it and records that in `~/.grok/experiments_state.json`, and the first `grok update` on 1.0.71 may record older ramps as left. The bridge never runs `grok update`, so nothing to change. New `cli.channels.<name>` defines custom channels.
+- **Other changes (not bridge):** the daemon route's code-cell tool is spelled `Execute`; hooks gain `failClosed` for `PreToolUse`/`UserPromptSubmit` (Claude's `onFailure: "block"` is read too); `[keys] vim = "all"` adds experimental vim editing in the prompt; `ui.single_ctrl_c_quit`; `GROK_INPUT_LOG` key logging and `/debug log`; new `features.send_feedback_tool`; `grok worker` gains `--run-mcp-servers`, `--mcp-tool-timeout`, `--data-dir` and `--wait`.
+- `grok-mission-control.ps1` default `-VerifiedVersion` is now 1.0.71. Template v9 still staged (not public yet).
+
 ## v9 · plugin 0.4.6 · 2026-10-24
 Re-verified against **Grok Build `grok 1.0.70`** (stable and alpha; npm published 2026-10-23 17:38 UTC; enterprise is still 1.0.69). **This is the first stable release past 1.0.67**, so stable users get every 1.0.68–1.0.70 change at once. Checked by diffing the 1.0.69 and 1.0.70 Linux builds from npm: short and full help, `grok help <sub>` for every subcommand, and the bundled user guide (official release notes for 1.0.70 weren't published yet). **Not live-tested on Windows yet**: the test PC still had 1.0.69 installed (alpha, auto-update on, `updateAvailable` true, latest 1.0.70).
 
