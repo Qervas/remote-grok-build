@@ -1,5 +1,14 @@
 # Changelog
 
+## v9 · plugin 0.4.8 · 2026-10-28
+Re-verified against **Grok Build `grok 1.0.72`** (alpha; npm published 2026-10-27 23:22 UTC; stable is still 1.0.70, enterprise 1.0.69). Checked by diffing the 1.0.71 and 1.0.72 Linux builds from npm: short and full help, `grok help <sub>` for every subcommand, and the bundled user guide. **Not live-tested on Windows**: the test PC was offline during the check.
+
+- **Nothing bridge-breaking.** No CLI flags or subcommands changed. Resume (`-r`/`-c`/`-s`/`--fork-session`), output formats, streaming event names, prompt/image input, `--add-dir` and the `~/.grok` session layout are unchanged. `--no-auto-update` still parses.
+- **Resume on the daemon route (1.0.72):** a session ID also finds a session an earlier Grok or the Cursor CLI saved in the same checkout or `grok -w` worktree.
+- **Permissions (1.0.72):** a recursive grep asks when its walk can reach a file a `Read`/`Grep` ask rule covers; wildcard-led ask rules such as `Read(**/.env)` make every recursive grep ask (or refuse under `prompt_policy = "deny"`). Headless bridge turns with such rules may hit more permission prompts.
+- **Other changes (not bridge):** new requirements-only `features.writeback` pin; `cli.session_registry` can be pinned by requirements; in plan review every letter types in the prompt (approve from the preview with `a`); MCP file-form tool schemas are only sent to trusted xAI base URLs.
+- `grok-mission-control.ps1` default `-VerifiedVersion` is now 1.0.72. Template v9 still staged (not public yet).
+
 ## v9 · plugin 0.4.7 · 2026-10-27
 Re-verified against **Grok Build `grok 1.0.71`** (alpha; npm published 2026-10-26 22:03 UTC; stable is still 1.0.70, enterprise 1.0.69). Checked by diffing the 1.0.70 and 1.0.71 Linux builds from npm: short and full help, `grok help <sub>` for every subcommand, and the bundled user guide. **Not live-tested on Windows**: the test PC was offline during the check.
 
