@@ -1,5 +1,14 @@
 # Changelog
 
+## v9 · plugin 0.4.9 · 2026-10-29
+Re-verified against **Grok Build `grok 1.0.73`** (alpha and enterprise; npm published 2026-10-28 16:04 UTC; stable is still 1.0.70, enterprise jumped from 1.0.69). Checked by diffing the 1.0.72 and 1.0.73 Linux builds from npm: short and full help, `grok help <sub>` for every subcommand, the bundled user guide and the binary's env-var/config strings. **Not live-tested on Windows**: the test PC was online but still on 1.0.72 (auto-update pending); only read-only `grok --version` / `grok update --check --json` / `grok --help` were run there.
+
+- **Nothing bridge-breaking.** Help output is byte-identical to 1.0.72: no CLI flags or subcommands changed. Resume (`-r`/`-c`/`-s`/`--fork-session`), output formats, streaming event names, prompt/image input, `--add-dir` and the `~/.grok` session layout are unchanged. `--no-auto-update` still parses.
+- **Permissions (1.0.73):** on the native route a folder search with the grok toolset's `grep` now leaves out the files a `Read`/`Grep` ask rule's path pattern covers instead of asking (replacing 1.0.72's extra prompts). Headless bridge turns with rules like `Read(**/.env)` see fewer prompts, but those files are silently skipped; a rule with no path (`Grep`, `Read`, `Read(*)`) still asks before every search. The daemon route and the compatibility toolset's `grep` still read them. A leading `~/` in a permission pattern now names the home directory (`Read(~/.ssh/**)`).
+- **Input (1.0.73):** new `[ui] multiline_default` / `/settings` → Start in multiline (Enter inserts a newline, Shift+Enter or Alt+Enter sends). Interactive TUI and dashboard only; `grok -p` turns are unaffected.
+- **Other changes (not bridge):** new GruvboxDarkHard theme; `managed_mcps.allow_external_auth` (gateway tools with non-xAI OIDC sign-in); the root transcript shows messages between two subagents; PageUp/PageDown/Home/End in plugin lists.
+- `grok-mission-control.ps1` default `-VerifiedVersion` is now 1.0.73. Template v9 still staged (not public yet).
+
 ## v9 · plugin 0.4.8 · 2026-10-28
 Re-verified against **Grok Build `grok 1.0.72`** (alpha; npm published 2026-10-27 23:22 UTC; stable is still 1.0.70, enterprise 1.0.69). Checked by diffing the 1.0.71 and 1.0.72 Linux builds from npm: short and full help, `grok help <sub>` for every subcommand, and the bundled user guide. **Not live-tested on Windows**: the test PC was offline during the check.
 

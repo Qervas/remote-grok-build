@@ -10,7 +10,7 @@
 
 Grok Bot **Agent Plugin** (skills-only) that bridges chat to **local Grok Build** on a linked Windows PC over the Grok Bot computer link. No public tunnels.
 
-**Template v9** · plugin `0.4.8` · verified against `grok 1.0.72` (help/binary diff 2026-10-28; last live test on 1.0.63, 2026-10-18). v9 is **staged for publishing, not public yet**. See [CHANGELOG.md](CHANGELOG.md) and [docs/TEMPLATE.md](docs/TEMPLATE.md).
+**Template v9** · plugin `0.4.9` · verified against `grok 1.0.73` (help/binary diff 2026-10-29; last live test on 1.0.63, 2026-10-18). v9 is **staged for publishing, not public yet**. See [CHANGELOG.md](CHANGELOG.md) and [docs/TEMPLATE.md](docs/TEMPLATE.md).
 
 ## What you get
 - Mission control (`status`): LIVE → STALE → RUNNING → idle, with title, last-turn summary, model/effort, branch
@@ -32,7 +32,7 @@ Grok Bot **Agent Plugin** (skills-only) that bridges chat to **local Grok Build*
 3. **Bot template:** [Add from x.ai](https://x.ai/bot/dLYpR1sSkG0VLa8-faEgX): public Grok Bot recipe with the same skill and conventions. That public link still serves v6. v9 (both skills plus the daily self-update routine) is staged and not yet published.
 
 ## Prerequisites on the linked PC
-- `grok` 1.0.50+ on PATH (cheat sheet: 1.0.72; last live test: 1.0.63) (`~/.grok/bin/grok.exe`), signed in
+- `grok` 1.0.50+ on PATH (cheat sheet: 1.0.73; last live test: 1.0.63) (`~/.grok/bin/grok.exe`), signed in
 - PowerShell 5.1 or 7+
 - Optional helpers under `~/.grok-bridge/`: see `helpers/` and `docs/HELPERS.md`
 
