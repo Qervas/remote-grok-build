@@ -1,5 +1,15 @@
 # Changelog
 
+## v9 · plugin 0.4.11 · 2026-11-05
+Re-verified against **Grok Build `grok 1.0.77`** (alpha; npm published 2026-11-05 04:52 UTC, after 1.0.75 on 2026-11-04 21:04 UTC and 1.0.76 on 2026-11-04 23:14 UTC; stable is still 1.0.70, enterprise 1.0.73). Checked by diffing the 1.0.74–1.0.77 Linux builds from npm: short and full help, `grok help <sub>` and `<sub> --help` for every subcommand, the bundled user guide and the binary's env-var/config strings. **Not live-tested on Windows**: the test PC was offline.
+
+- **Nothing bridge-breaking.** Resume (`-r`/`-c`/`-s`/`--fork-session`), output formats, streaming event names, prompt/image input, `--add-dir`, interrupt handling and the `~/.grok` session layout are unchanged. `--no-auto-update` and `GROK_DISABLE_AUTOUPDATER` still parse.
+- **Headless spend (1.0.75):** `end`'s usage/cost and `streaming-messages-json`'s `result.usage` now sum every turn the run made, including later wake or goal turns. On the daemon route `usage` lines come once per turn (subagent turns included) with only that turn's total, so don't add them to `end`. `usage_is_incomplete` (cost omitted) is also set when a later turn was interrupted or failed, a goal was still running at exit, or exit couldn't stop work. The skill's `usage` event note now says this.
+- **Background work at exit (1.0.75):** on the daemon route, a run that stops work at exit lists each stopped workflow run on stderr.
+- **Update channels (1.0.75–1.0.77):** 1.0.75/1.0.76 added `grok update --legacy-alpha`/`--legacy-stable` (`--channel legacy-*`), which switch to the native build, save `build = "legacy"` in `~/.grok/config.toml` and stay off a server-side "unified" build rollout. 1.0.77 hides them and offers them only to accounts in that rollout. The bridge still never runs `grok update`.
+- **Other changes (not bridge):** `grok usage` without a session ID prints the plan's usage limit (`--json`, daemon route only); `grok wrap` opens web links over SSH in the local browser (`GROK_WRAP_OPEN_LINKS=0`); `ui.kitty_keyboard`/`GROK_KITTY_KEYBOARD`; `cursor_worker.engine`; `features.daemon_feedback_drafts`; per-account remote experiment opt-out; `subagents.max_depth` default 1 (`GROK_SUBAGENTS_MAX_DEPTH`); Herdr 2 program status.
+- `grok-mission-control.ps1` default `-VerifiedVersion` is now 1.0.77. Template v9 still staged (not public yet).
+
 ## v9 · plugin 0.4.10 · 2026-11-03
 Re-verified against **Grok Build `grok 1.0.74`** (alpha; npm published 2026-11-03 07:21 UTC; stable is still 1.0.70, enterprise 1.0.73). Checked by diffing the 1.0.73 and 1.0.74 Linux builds from npm: short and full help, `grok help <sub>` for every subcommand, the bundled user guide and the binary's env-var/config strings. **Not live-tested on Windows**: the test PC was online but still on 1.0.73 (auto-update to 1.0.74 pending); only read-only `grok --version` / `grok update --check --json` were run there.
 
