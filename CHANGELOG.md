@@ -1,5 +1,12 @@
 # Changelog
 
+## v9 · plugin 0.4.12 · 2026-11-06
+Re-verified against **Grok Build `grok 1.0.78`** (alpha; npm published 2026-11-06 04:39 UTC; stable and enterprise are now 1.0.77; npm `latest` still 1.0.77). Checked by diffing the 1.0.77 and 1.0.78 Linux builds from npm: short and full help, `grok help <sub>` and `<sub> --help` for every subcommand, the bundled user guide and the binary's env-var/config strings. **Not live-tested on Windows**: the test PC was online on 1.0.77 with 1.0.78 pending on alpha (auto-update on); this check did not install it.
+
+- **Nothing bridge-breaking.** Resume (`-r`/`-c`/`-s`/`--fork-session`), output formats, streaming event names, prompt/image input, `--add-dir`, interrupt handling and the `~/.grok` session layout are unchanged. CLI help for every subcommand is identical to 1.0.77. `--no-auto-update` and `GROK_DISABLE_AUTOUPDATER` still parse.
+- **TUI-only (1.0.78):** `@` file chips can be edited in place; typed `@~/` paths resolve to the home folder; dragging in the transcript selects and copies colored text across message blocks instead of whole blocks; always-approve help text now correctly says the setting is saved to config. Bundled-guide extras also TUI-only: `features.link_card` / `GROK_LINK_CARD`, cancel-turn panel choices when subagents are running, line-viewer on picked `@` files.
+- `grok-mission-control.ps1` default `-VerifiedVersion` is now 1.0.78. Template v9 still staged (not public yet).
+
 ## v9 · plugin 0.4.11 · 2026-11-05
 Re-verified against **Grok Build `grok 1.0.77`** (alpha; npm published 2026-11-05 04:52 UTC, after 1.0.75 on 2026-11-04 21:04 UTC and 1.0.76 on 2026-11-04 23:14 UTC; stable is still 1.0.70, enterprise 1.0.73). Checked by diffing the 1.0.74–1.0.77 Linux builds from npm: short and full help, `grok help <sub>` and `<sub> --help` for every subcommand, the bundled user guide and the binary's env-var/config strings. **Not live-tested on Windows**: the test PC was offline.
 
