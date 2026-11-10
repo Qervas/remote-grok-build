@@ -1,5 +1,14 @@
 # Changelog
 
+## v9 · plugin 0.4.14 · 2026-11-10
+Re-verified against **Grok Build `grok 1.0.80`** (alpha; npm published 2026-11-09 22:51 UTC; npm `latest` is still 1.0.77). Checked by diffing the 1.0.79 and 1.0.80 Linux builds from npm: short and full help, `grok help <sub>` and `<sub> --help` for every subcommand and second-level subcommand, the bundled user guide and the binary's env-var/config strings. **Not live-tested on Windows**: the test PC was online on 1.0.78 with 1.0.80 pending on alpha (auto-update on); only read-only `grok --version` and `grok update --check --json` were run there.
+
+- **Nothing bridge-breaking.** CLI help for every subcommand is identical to 1.0.79. Resume (`-r`/`-c`/`-s`/`--fork-session`), output formats, streaming event names, prompt/image input, `--add-dir`, interrupt handling, the `~/.grok` session layout and the headless and sessions guide pages are unchanged. `--no-auto-update` and `GROK_DISABLE_AUTOUPDATER` still parse.
+- **Permissions:** the interactive TUI now defaults to Auto-review (`auto`) instead of ask; headless `-p` is unaffected, and `grok-turn.ps1 -PermissionMode` still passes `--permission-mode` explicitly. On the daemon route, new `features.ask_local_reads` (default on, `GROK_ASK_LOCAL_READS`) lets ask mode run local read-only shell commands (`stat`, `find`, `du`, ...) without a prompt. ACP `yoloMode`/`autoMode` are now accepted on `session/load` and `session/resume` too.
+- **Sessions:** new `features.overdue_reattach` (daemon route, default on, `GROK_OVERDUE_REATTACH`) keeps a session open and reattaching for up to 10 minutes when its journal stops answering but the background service still listens.
+- **Other changes (not bridge):** `/auto-review` (`/auto` still runs); opt-in `features.pending_steer` (`GROK_PENDING_STEER`) and `features.paged_full_load` (`GROK_PAGED_FULL_LOAD`); shell-route `features.auto_review_protected_paths` (default off); debug `GROK_FPS` / `GROK_SCROLL_DEBUG`; more vim-mode keys.
+- `grok-mission-control.ps1` default `-VerifiedVersion` is now 1.0.80. Template v9 still staged (not public yet).
+
 ## v9 · plugin 0.4.13 · 2026-11-08
 Re-verified against **Grok Build `grok 1.0.79`** (alpha and enterprise; npm published 2026-11-08 00:48 UTC; stable is still 1.0.77; npm `latest` still 1.0.77). Checked by diffing the 1.0.78 and 1.0.79 Linux builds from npm: short and full help, `grok help <sub>` and `<sub> --help` for every subcommand and second-level subcommand, the bundled user guide and the binary's env-var/config strings. **Not live-tested on Windows**: the test PC was online on 1.0.78 with 1.0.79 pending on alpha (auto-update on); only read-only `grok --version`, `grok update --check --json` and `grok --help` were run there, and this check did not install 1.0.79.
 
