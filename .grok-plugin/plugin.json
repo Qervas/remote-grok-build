@@ -1,7 +1,7 @@
 {
   "name": "remote-grok-build",
-  "version": "0.4.14",
-  "description": "Bridge Grok Bot chat to local Grok Build on a linked PC: mission control, streaming turns, interrupt, media packs (template v9, grok 1.0.80); optional chief→workers and RGB channel.",
+  "version": "0.4.15",
+  "description": "Bridge Grok Bot chat to local Grok Build on a linked PC: mission control, streaming turns, interrupt, media packs (template v9, grok 1.0.81); optional chief→workers and RGB channel.",
   "author": {
     "name": "Qervas"
   },

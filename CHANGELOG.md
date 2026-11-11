@@ -1,5 +1,13 @@
 # Changelog
 
+## v9 · plugin 0.4.15 · 2026-11-11
+Re-verified against **Grok Build `grok 1.0.81`** (alpha; npm published 2026-11-11 04:44 UTC; npm `latest` is still 1.0.77). Checked by diffing the 1.0.80 and 1.0.81 Linux builds from npm: short and full help, `<sub> --help` for every subcommand and second-level subcommand, the bundled user guide and the binary's env-var/config strings. **Not live-tested on Windows**: the test PC was online on 1.0.78 with 1.0.81 pending on alpha (auto-update on); only read-only `grok --version` and `grok update --check --json` were run there.
+
+- **Nothing bridge-breaking.** Resume (`-r`/`-c`/`-s`/`--fork-session`), output formats, streaming event names, prompt/image input, `--add-dir`, interrupt handling and the `~/.grok` session layout are unchanged. `--no-auto-update` and `GROK_DISABLE_AUTOUPDATER` still parse.
+- **Sessions:** new `grok sessions list --all` lists sessions from every folder and repository (the only CLI help change); the skill now offers it for the all-folders view alongside scanning `~/.grok/sessions`. On the daemon route `-s/--session-id` must be a lowercase hyphenated UUID; the skill now says so. `storage.cleanup_ttl_days` is documented as shell-route only (the daemon route never cleans up its sessions). `features.resume_refusals` no longer repeats a commit-based refusal.
+- **Other changes (not bridge):** `features.cloud_agents` (`GROK_CLOUD_AGENTS`), opt-in daemon-route `/tree` (`features.history_tree`), `features.fail_silent_opens`, `features.cursor_relay_login`, `features.sign_in_chooser` (replaces `features.cursor_api_key_paste`), `auth.force_cursor_sign_in` (Cursor builds), `features.auto_review_protected_paths` now on the daemon route too.
+- `grok-mission-control.ps1` default `-VerifiedVersion` is now 1.0.81. Template v9 still staged (not public yet).
+
 ## v9 · plugin 0.4.14 · 2026-11-10
 Re-verified against **Grok Build `grok 1.0.80`** (alpha; npm published 2026-11-09 22:51 UTC; npm `latest` is still 1.0.77). Checked by diffing the 1.0.79 and 1.0.80 Linux builds from npm: short and full help, `grok help <sub>` and `<sub> --help` for every subcommand and second-level subcommand, the bundled user guide and the binary's env-var/config strings. **Not live-tested on Windows**: the test PC was online on 1.0.78 with 1.0.80 pending on alpha (auto-update on); only read-only `grok --version` and `grok update --check --json` were run there.
 
