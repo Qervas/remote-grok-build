@@ -1,5 +1,14 @@
 # Changelog
 
+## v9 · plugin 0.4.16 · 2026-11-12
+Re-verified against **Grok Build `grok 1.0.83`** (alpha; npm published 2026-11-11 23:08 UTC, after 1.0.82 at 2026-11-11 20:35 UTC; npm `latest` is still 1.0.77). Checked by diffing the 1.0.81, 1.0.82 and 1.0.83 Linux builds from npm: short and full help, `<sub> --help` for every subcommand and second-level subcommand, the bundled user guide and the binary's env-var/config strings. **Not live-tested on Windows**: the test PC was online on 1.0.78 with 1.0.83 pending on alpha (auto-update on); only read-only `grok --version`, `grok update --check --json` and `grok --help` were run there.
+
+- **Nothing bridge-breaking.** CLI help for every subcommand is identical to 1.0.81. Output formats, streaming event names, prompt/image input, `--add-dir`, interrupt handling and the `~/.grok` session layout are unchanged. `--no-auto-update` and `GROK_DISABLE_AUTOUPDATER` still parse. 1.0.83 changes no help text, guide page or config key over 1.0.82.
+- **Resume (1.0.82):** headless `-r` now needs a value. A bare or empty `-r` exits 1 before Grok starts (`--resume requires a valid session ID or session title when used with --print`) instead of resuming the most recent session; use `-c` for that (verified on the Linux build). `grok-turn.ps1` only passes `--resume` when `-SessionId` is set, so it is unaffected. On the daemon route, `-r` on a session another grok has open fails with an error suggesting `--fork-session`. The skill's cheat sheet now says both.
+- **Session storage (1.0.82):** the guide now states that `-p` runs don't write `summary.json`'s `last_turn_summary`; the skill says to take a headless turn's reply from its own output (`grok-after-turn.ps1`).
+- **Other changes (not bridge):** `Ctrl+O` on the agent screen now copies the latest reply (same as `/copy`) instead of toggling always-approve; new `minimal` sandbox profile and custom-profile `workspace_write`; daemon-route `features.idle_root_unload` (default off), `features.model_list_refresh`, `features.load_rows_from_parent`, `features.inline_code_copy` / `ui.copy_inline_code_backticks`; memory toggle saves `[memory_v2] enabled`; undocumented `GROK_UPDATE_DELEGATED` in the updater's channel-switch code.
+- `grok-mission-control.ps1` default `-VerifiedVersion` is now 1.0.83. Template v9 still staged (not public yet).
+
 ## v9 · plugin 0.4.15 · 2026-11-11
 Re-verified against **Grok Build `grok 1.0.81`** (alpha; npm published 2026-11-11 04:44 UTC; npm `latest` is still 1.0.77). Checked by diffing the 1.0.80 and 1.0.81 Linux builds from npm: short and full help, `<sub> --help` for every subcommand and second-level subcommand, the bundled user guide and the binary's env-var/config strings. **Not live-tested on Windows**: the test PC was online on 1.0.78 with 1.0.81 pending on alpha (auto-update on); only read-only `grok --version` and `grok update --check --json` were run there.
 
