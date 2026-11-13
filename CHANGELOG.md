@@ -1,5 +1,12 @@
 # Changelog
 
+## v9 · plugin 0.4.17 · 2026-11-13
+Re-verified against **Grok Build `grok 1.0.84`** (alpha; npm published 2026-11-12 18:58 UTC; npm `latest` is still 1.0.77). Checked by diffing the 1.0.83 and 1.0.84 Linux builds from npm: short and full help, `<sub> --help` for every subcommand and second-level subcommand, the bundled user guide and the binary's env-var/config strings. **Not live-tested on Windows**: the test PC was online on 1.0.78 with 1.0.84 pending on alpha (auto-update on); only read-only `grok --version` and `grok update --check --json` were run there.
+
+- **Nothing bridge-breaking.** CLI help for every subcommand is identical to 1.0.83 (only `grok worktree`'s subcommand list is reordered). Output formats, streaming event names, prompt/image input, resume (a bare or empty headless `-r` still exits 1), interrupt handling and the `~/.grok` session layout are unchanged. `--no-auto-update` and `GROK_DISABLE_AUTOUPDATER` still parse (verified on the Linux build).
+- **Other changes (not bridge):** new daemon-route `features.unify_ask` (default off, `GROK_UNIFY_ASK`) shows plan status for a SuperGrok or X Premium+ account that has not unified after sign-in; `features.cloud_agents` docs say it also refuses while a file that could turn it off fails to load; `features.model_list_refresh` also retries after a failed model-list read.
+- `grok-mission-control.ps1` default `-VerifiedVersion` is now 1.0.84. Template v9 still staged (not public yet).
+
 ## v9 · plugin 0.4.16 · 2026-11-12
 Re-verified against **Grok Build `grok 1.0.83`** (alpha; npm published 2026-11-11 23:08 UTC, after 1.0.82 at 2026-11-11 20:35 UTC; npm `latest` is still 1.0.77). Checked by diffing the 1.0.81, 1.0.82 and 1.0.83 Linux builds from npm: short and full help, `<sub> --help` for every subcommand and second-level subcommand, the bundled user guide and the binary's env-var/config strings. **Not live-tested on Windows**: the test PC was online on 1.0.78 with 1.0.83 pending on alpha (auto-update on); only read-only `grok --version`, `grok update --check --json` and `grok --help` were run there.
 
