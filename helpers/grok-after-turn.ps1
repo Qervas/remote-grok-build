@@ -95,6 +95,8 @@ $manifest | ConvertTo-Json -Depth 8 | Set-Content $out -Encoding utf8
 Write-Output "WROTE $out"
 Write-Output "SESSION=$SessionId"
 Write-Output "STATE=$state"
+# 1.0.86+: a hook that blocked the prompt or stopped the agent ends with stopReason hook_blocked/hook_stopped and puts its message in end.error.
+if ($end -and $end.error) { Write-Output ("END_ERROR={0}" -f (($end.error | Out-String).Trim() -replace '\r?\n',' ')) }
 Write-Output ("IMAGES={0} ASSETS={1} INBOUND_SKIPPED={2}" -f $images.Count, $assets.Count, $skipped)
 if ($git) { Write-Output ("GIT={0}@{1}" -f $git.branch, $git.head) }
 exit 0
